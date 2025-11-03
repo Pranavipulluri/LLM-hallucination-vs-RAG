@@ -1,0 +1,10 @@
+PROJECT STATUS: COMPLETE ✅
+
+All information consolidated into README.md
+
+Quick Start:
+1. pip install -r requirements.txt
+2. python scripts/simple_demo.py
+3. streamlit run app/streamlit_app.py
+
+See README.md for complete documentation.
