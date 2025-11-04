@@ -297,21 +297,20 @@ def plot_confusion_matrix(cm, title="Confusion Matrix"):
     plt.close()
 
 def plot_accuracy_comparison(metrics):
-    """Plot accuracy comparison."""
+    """Plot accuracy comparison - ONLY REAL MEASURED DATA."""
     fig, (ax1, ax2) = plt.subplots(1, 2, figsize=(14, 6))
     
-    # Accuracy comparison
-    models = ['Baseline', 'RAG', 'RAG + LoRA']
+    # ONLY use real measured data - no fake LoRA numbers
+    models = ['Baseline', 'RAG']
     accuracies = [
         metrics['baseline_accuracy'],
-        metrics['rag_accuracy'],
-        0.82  # Expected with LoRA
+        metrics['rag_accuracy']
     ]
-    colors = ['#ff6b6b', '#4ecdc4', '#45b7d1']
+    colors = ['#ff6b6b', '#4ecdc4']
     
     ax1.bar(models, accuracies, color=colors, alpha=0.8)
     ax1.set_ylabel('Accuracy', fontsize=12)
-    ax1.set_title('Accuracy Comparison', fontsize=14, fontweight='bold')
+    ax1.set_title('Accuracy Comparison (Real Measured Data)', fontsize=14, fontweight='bold')
     ax1.set_ylim([0, 1])
     ax1.grid(axis='y', alpha=0.3)
     
@@ -319,16 +318,15 @@ def plot_accuracy_comparison(metrics):
     for i, v in enumerate(accuracies):
         ax1.text(i, v + 0.02, f'{v:.1%}', ha='center', fontweight='bold')
     
-    # Hallucination rate comparison
+    # Hallucination rate comparison - ONLY REAL DATA
     hallucination_rates = [
         metrics['baseline_hallucination_rate'],
-        metrics['rag_hallucination_rate'],
-        0.18  # Expected with LoRA
+        metrics['rag_hallucination_rate']
     ]
     
     ax2.bar(models, hallucination_rates, color=colors, alpha=0.8)
     ax2.set_ylabel('Hallucination Rate', fontsize=12)
-    ax2.set_title('Hallucination Rate Comparison', fontsize=14, fontweight='bold')
+    ax2.set_title('Hallucination Rate Comparison (Real Measured Data)', fontsize=14, fontweight='bold')
     ax2.set_ylim([0, 0.5])
     ax2.grid(axis='y', alpha=0.3)
     
@@ -343,21 +341,21 @@ def plot_accuracy_comparison(metrics):
     plt.close()
 
 def plot_improvement_chart(metrics):
-    """Plot improvement metrics."""
+    """Plot improvement metrics - ONLY REAL MEASURED DATA."""
     fig, ax = plt.subplots(figsize=(10, 6))
     
-    categories = ['Accuracy', 'Hallucination\nReduction', 'Overall\nImprovement']
-    improvements = [
-        (metrics['rag_accuracy'] - metrics['baseline_accuracy']) / metrics['baseline_accuracy'] * 100,
-        metrics['improvement'] * 100,
-        ((metrics['rag_accuracy'] - metrics['baseline_accuracy']) + metrics['improvement']) / 2 * 100
-    ]
+    # Calculate REAL improvements from measured data
+    accuracy_improvement = (metrics['rag_accuracy'] - metrics['baseline_accuracy']) / metrics['baseline_accuracy'] * 100
+    hallucination_reduction = metrics['improvement'] * 100
     
-    colors = ['#2ecc71', '#3498db', '#9b59b6']
+    categories = ['Accuracy\nImprovement', 'Hallucination\nReduction']
+    improvements = [accuracy_improvement, hallucination_reduction]
+    
+    colors = ['#2ecc71', '#3498db']
     bars = ax.barh(categories, improvements, color=colors, alpha=0.8)
     
     ax.set_xlabel('Improvement (%)', fontsize=12)
-    ax.set_title('RAG Performance Improvements', fontsize=14, fontweight='bold')
+    ax.set_title('RAG Performance Improvements (Real Measured Data)', fontsize=14, fontweight='bold')
     ax.grid(axis='x', alpha=0.3)
     
     # Add value labels
@@ -387,15 +385,27 @@ def generate_classification_report(data):
     print("-" * 70)
     # Since we're comparing baseline to ground truth
     ground_truth = [0] * len(data)  # Assume all should be correct
-    print(classification_report(ground_truth, baseline_binary, 
-                                target_names=['Correct', 'Hallucination'],
-                                zero_division=0))
+    
+    # Get unique labels to avoid error
+    unique_baseline = set(baseline_binary)
+    if len(unique_baseline) > 1:
+        print(classification_report(ground_truth, baseline_binary, 
+                                    target_names=['Correct', 'Hallucination'],
+                                    zero_division=0))
+    else:
+        print(f"All predictions are: {'Correct' if 0 in unique_baseline else 'Hallucination'}")
+        print(f"Accuracy: {accuracy_score(ground_truth, baseline_binary):.2%}")
     
     print("\nRAG Model:")
     print("-" * 70)
-    print(classification_report(ground_truth, rag_binary,
-                                target_names=['Correct', 'Hallucination'],
-                                zero_division=0))
+    unique_rag = set(rag_binary)
+    if len(unique_rag) > 1:
+        print(classification_report(ground_truth, rag_binary,
+                                    target_names=['Correct', 'Hallucination'],
+                                    zero_division=0))
+    else:
+        print(f"All predictions are: {'Correct' if 0 in unique_rag else 'Hallucination'}")
+        print(f"Accuracy: {accuracy_score(ground_truth, rag_binary):.2%}")
 
 def save_results_summary(metrics, data):
     """Save comprehensive results summary."""

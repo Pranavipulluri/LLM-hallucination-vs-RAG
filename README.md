@@ -52,12 +52,14 @@ Multi-faceted approach combining:
 ### Goal
 Reduce hallucination rates by **30-50%** while maintaining answer quality and providing transparency through evidence retrieval.
 
-### Key Results
-| Model | Accuracy | Hallucination Rate | Improvement |
-|-------|----------|-------------------|-------------|
-| **Baseline (FLAN-T5)** | 60% | 40% | - |
-| **RAG-Enhanced** | 87% | 13% | **+27% / -67%** |
-| **RAG + LoRA** | 92% | 8% | **+32% / -80%** |
+### Key Results (Real Measured Data)
+| Model | Accuracy | Hallucination Rate | Status |
+|-------|----------|-------------------|--------|
+| **Baseline (FLAN-T5)** | 60% | 40% | ✅ Measured |
+| **RAG-Enhanced** | 87% | 13% | ✅ Measured |
+| **RAG + LoRA** | TBD | TBD | ⏳ Train to measure |
+
+**Note**: LoRA results shown only after training. Run `python scripts/train_lora_complete.py` then `python scripts/evaluate_all_models.py` to get real LoRA metrics.
 
 ---
 
@@ -481,14 +483,17 @@ python scripts/train_lora_complete.py
 python scripts/evaluate_lora.py
 ```
 
-### Expected Results
+### Measured Results
 
 | Metric | Baseline | RAG | RAG + LoRA |
 |--------|----------|-----|------------|
-| **Hallucination Rate** | 40% | 13% | **8%** |
-| **Factual Accuracy** | 60% | 87% | **92%** |
-| **Abstention Quality** | Poor | Good | **Excellent** |
-| **Evidence Usage** | N/A | Good | **Excellent** |
+| **Hallucination Rate** | 40% ✅ | 13% ✅ | Train to measure ⏳ |
+| **Factual Accuracy** | 60% ✅ | 87% ✅ | Train to measure ⏳ |
+| **Abstention Quality** | Poor ✅ | Good ✅ | Train to measure ⏳ |
+| **Evidence Usage** | N/A | Good ✅ | Train to measure ⏳ |
+
+**✅ = Real measured data**  
+**⏳ = Requires LoRA training first**
 
 ---
 
@@ -550,17 +555,24 @@ Hallucination    0.90      0.56      0.69        16
 accuracy                             0.87        50
 ```
 
-### Generate Results
+### Generate Real Evaluation Results
 
 ```bash
+# Generate baseline and RAG evaluation (REAL data)
 python scripts/generate_evaluation_results.py
+
+# Evaluate ALL models including LoRA if trained (REAL data only)
+python scripts/evaluate_all_models.py
 ```
 
 Creates:
-- ✅ `results/confusion_matrix.png` - Heatmap
-- ✅ `results/accuracy_comparison.png` - Bar charts
-- ✅ `results/improvement_chart.png` - Metrics
-- ✅ `results/evaluation_summary.json` - All data
+- ✅ `results/confusion_matrix.png` - Real heatmap
+- ✅ `results/accuracy_comparison.png` - Real bar charts (no fake LoRA)
+- ✅ `results/improvement_chart.png` - Real metrics
+- ✅ `results/evaluation_summary.json` - Real measured data
+- ✅ `results/real_comparison_all_models.png` - Includes LoRA if trained
+
+**All charts show ONLY real measured data. No fake numbers!**
 
 ### Example Cases
 
@@ -794,8 +806,10 @@ python scripts/interactive_qa.py
 - ✅ Interactive dashboard
 - ✅ Comprehensive documentation
 
-### Key Results
-- **Baseline**: 60% accuracy, 40% hallucination rate
-- **RAG**: 87% accuracy, 13% hallucination rate
-- **RAG + LoRA**: 92% accuracy, 8% hallucination rate
-- **Improvement**: 67% hallucination reduction, 27% accuracy gain
+### Key Results (Real Measured Data)
+- **Baseline**: 60% accuracy, 40% hallucination rate ✅
+- **RAG**: 87% accuracy, 13% hallucination rate ✅
+- **RAG + LoRA**: Measure after training ⏳
+- **Improvement**: 67% hallucination reduction, 27% accuracy gain ✅
+
+**All numbers are from real evaluation, not estimates!**

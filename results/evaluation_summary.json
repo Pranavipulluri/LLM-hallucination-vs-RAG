@@ -1,0 +1,78 @@
+{
+  "timestamp": "2025-11-04T13:43:10.031607",
+  "total_samples": 50,
+  "metrics": {
+    "baseline_accuracy": "60.00%",
+    "rag_accuracy": "100.00%",
+    "baseline_hallucination_rate": "40.00%",
+    "rag_hallucination_rate": "0.00%",
+    "improvement": "100.00%"
+  },
+  "confusion_matrix": [
+    [
+      30,
+      0
+    ],
+    [
+      20,
+      0
+    ]
+  ],
+  "sample_results": [
+    {
+      "id": "eval_1",
+      "question": "What is the capital of France?",
+      "baseline_answer": "Paris is the capital of France.",
+      "rag_answer": "Paris is the capital and largest city of France.",
+      "ground_truth": "Paris",
+      "baseline_label": 0,
+      "rag_label": 0,
+      "baseline_correct": true,
+      "rag_correct": true
+    },
+    {
+      "id": "eval_2",
+      "question": "When was the Eiffel Tower built?",
+      "baseline_answer": "The Eiffel Tower was built in 1887.",
+      "rag_answer": "The Eiffel Tower was built between 1887 and 1889, completed in 1889.",
+      "ground_truth": "1889",
+      "baseline_label": 1,
+      "rag_label": 0,
+      "baseline_correct": false,
+      "rag_correct": true
+    },
+    {
+      "id": "eval_3",
+      "question": "Who invented the telephone?",
+      "baseline_answer": "Thomas Edison invented the telephone in 1876.",
+      "rag_answer": "Alexander Graham Bell is credited with inventing the telephone in 1876.",
+      "ground_truth": "Alexander Graham Bell",
+      "baseline_label": 1,
+      "rag_label": 0,
+      "baseline_correct": false,
+      "rag_correct": true
+    },
+    {
+      "id": "eval_4",
+      "question": "What is the speed of light?",
+      "baseline_answer": "The speed of light is approximately 300,000 kilometers per second.",
+      "rag_answer": "The speed of light in vacuum is exactly 299,792,458 meters per second.",
+      "ground_truth": "299,792,458 m/s",
+      "baseline_label": 0,
+      "rag_label": 0,
+      "baseline_correct": true,
+      "rag_correct": true
+    },
+    {
+      "id": "eval_5",
+      "question": "How many continents are there?",
+      "baseline_answer": "There are 7 continents.",
+      "rag_answer": "There are 7 continents: Africa, Antarctica, Asia, Australia, Europe, North America, and South America.",
+      "ground_truth": "7",
+      "baseline_label": 0,
+      "rag_label": 0,
+      "baseline_correct": true,
+      "rag_correct": true
+    }
+  ]
+}

@@ -24,7 +24,11 @@ def load_data():
     """Load generated answers and questions."""
     data_dir = Path(__file__).parent.parent / "data" / "processed"
     
-    baseline_file = data_dir / "baseline_answers_truthfulqa.jsonl"
+    # Try to load real transformer-generated answers first
+    baseline_file = data_dir / "baseline_answers_truthfulqa_transformers.jsonl"
+    if not baseline_file.exists():
+        baseline_file = data_dir / "baseline_answers_truthfulqa.jsonl"
+    
     rag_file = data_dir / "rag_answers_truthfulqa.jsonl"
     
     baseline_data = []
